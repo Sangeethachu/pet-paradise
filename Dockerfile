@@ -20,8 +20,11 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy project
+# Copy project AND entrypoint script
 COPY . /app/
+
+# Make entrypoint executable and ensure Unix line endings
+RUN sed -i 's/\r$//g' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
@@ -29,5 +32,5 @@ RUN python manage.py collectstatic --noinput
 # Expose port
 EXPOSE 8000
 
-# Run gunicorn
-CMD ["gunicorn", "petparadise.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Run entrypoint script
+CMD ["/app/entrypoint.sh"]
