@@ -6,9 +6,9 @@ databases:
 services:
   - type: web
     name: petparadise-app
-    env: python
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn petparadise.wsgi:application"
+    env: docker
+    plan: free
+    preDeployCommand: "python manage.py migrate"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
