@@ -1,5 +1,6 @@
 databases:
   - name: petparadise-db
+    plan: free
     databaseName: petparadise
     user: petparadise_user
 
